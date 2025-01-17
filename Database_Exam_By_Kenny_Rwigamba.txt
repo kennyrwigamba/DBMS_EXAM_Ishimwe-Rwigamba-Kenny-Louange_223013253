@@ -1,0 +1,444 @@
+MariaDB [(none)]> CREATE DATABASE exam;
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [(none)]> USE exam;
+Database changed
+
+
+############################## Question 1 ########################################
+
+
+MariaDB [exam]> CREATE TABLE Client_master(ClientNO varchar(10) PRIMARY KEY, Name varchar(100), Address varchar(100), City varchar(10
+0), State varchar(100), bal_due int);
+Query OK, 0 rows affected (0.036 sec)
+
+MariaDB [exam]> INSERT INTO client_master VALUES("C121", "Kenny", "KK 501 st", "Remera","Kigali", "5000"),("C122","Muhire","NR 333 av
+e", "BUTARE", "Huye","5200");
+Query OK, 2 rows affected (0.011 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+MariaDB [exam]> INSERT INTO client_master VALUES("C123", "Rukundo", "KM 555 st", "Kimironko","Kigali", "5100"),("C124","Prince","NN 3
+63 ave", "Cyarwa", "Nyanza","5500");
+Query OK, 2 rows affected (0.030 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+MariaDB [exam]> INSERT INTO client_master VALUES("C125", "Uwase", "KG 425 st", "Gatenga","Kigali", "5300");
+Query OK, 1 row affected (0.011 sec)
+
+MariaDB [exam]> select*from client_master;
++----------+---------+------------+-----------+--------+---------+
+| ClientNO | Name    | Address    | City      | State  | bal_due |
++----------+---------+------------+-----------+--------+---------+
+| C121     | Kenny   | KK 501 st  | Remera    | Kigali |    5000 |
+| C122     | Muhire  | NR 333 ave | BUTARE    | Huye   |    5200 |
+| C123     | Rukundo | KM 555 st  | Kimironko | Kigali |    5100 |
+| C124     | Prince  | NN 363 ave | Cyarwa    | Nyanza |    5500 |
+| C125     | Uwase   | KG 425 st  | Gatenga   | Kigali |    5300 |
++----------+---------+------------+-----------+--------+---------+
+5 rows in set (0.001 sec)
+
+############################## Question 2 ########################################
+
+MariaDB [exam]> select Name from client_master where bal_due>5000;
++---------+
+| Name    |
++---------+
+| Muhire  |
+| Rukundo |
+| Prince  |
+| Uwase   |
++---------+
+4 rows in set (0.001 sec)
+
+############################## Question 3 ########################################
+
+MariaDB [exam]> update client_master set bal_due = 5100 where ClientNO = C123;
+ERROR 1054 (42S22): Unknown column 'C123' in 'where clause'
+MariaDB [exam]> update client_master set bal_due = 5100 where ClientNO = 'C123';
+Query OK, 0 rows affected (0.001 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+MariaDB [exam]> select * from client_master;
++----------+---------+------------+-----------+--------+---------+
+| ClientNO | Name    | Address    | City      | State  | bal_due |
++----------+---------+------------+-----------+--------+---------+
+| C121     | Kenny   | KK 501 st  | Remera    | Kigali |    5000 |
+| C122     | Muhire  | NR 333 ave | BUTARE    | Huye   |    5200 |
+| C123     | Rukundo | KM 555 st  | Kimironko | Kigali |    5100 |
+| C124     | Prince  | NN 363 ave | Cyarwa    | Nyanza |    5500 |
+| C125     | Uwase   | KG 425 st  | Gatenga   | Kigali |    5300 |
++----------+---------+------------+-----------+--------+---------+
+5 rows in set (0.001 sec)
+
+############################## Question 4 ########################################
+
+MariaDB [exam]> ALTER TABLE client_master RENAME Client12;
+Query OK, 0 rows affected (0.019 sec)
+
+############################## Question 5 ########################################
+
+MariaDB [exam]> ALTER TABLE client12 CHANGE bal_due BALANCE int;
+Query OK, 0 rows affected (0.017 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [exam]> desc client12;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| ClientNO | varchar(10)  | NO   | PRI | NULL    |       |
+| Name     | varchar(100) | YES  |     | NULL    |       |
+| Address  | varchar(100) | YES  |     | NULL    |       |
+| City     | varchar(100) | YES  |     | NULL    |       |
+| State    | varchar(100) | YES  |     | NULL    |       |
+| BALANCE  | int(11)      | YES  |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+6 rows in set (0.036 sec)
+
+
+
+
+########## PART B ############
+############################## Question 6 - A ########################################
+
+MariaDB [exam]> CREATE TABLE departments(dep_id int PRIMARY KEY AUTO_INCREMENT, dep_name varchar(100));
+Query OK, 0 rows affected (0.032 sec)
+
+MariaDB [exam]> INSERT INTO departments(dep_name) VALUES("HR"), ("Finance"), ("IT"), ("Sales and Marketing"), ("Production");
+Query OK, 5 rows affected (0.014 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [exam]> select*from departments;
++--------+---------------------+
+| dep_id | dep_name            |
++--------+---------------------+
+|      1 | HR                  |
+|      2 | Finance             |
+|      3 | IT                  |
+|      4 | Sales and Marketing |
+|      5 | Production          |
++--------+---------------------+
+5 rows in set (0.001 sec)
+
+MariaDB [exam]> CREATE TABLE employees(emp_id int PRIMARY KEY AUTO_INCREMENT, emp_name varchar(100), salary int, dep_id int, FOREIGN
+KEY(dep_id) REFERENCES departments(dep_id));
+Query OK, 0 rows affected (0.055 sec)
+
+MariaDB [exam]> INSERT INTO EMPLOYEES (emp_name, salary, dep_id) VALUES('Alice', 160000, 1),('Claude', 175000, 2),('prince', 180000, 3),('Muhire', 155000, 4),('Vestine', 190000, 5),('Muhoza', 200000, 3);
+Query OK, 6 rows affected (0.011 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+MariaDB [exam]> select * from employees;
++--------+----------+--------+--------+
+| emp_id | emp_name | salary | dep_id |
++--------+----------+--------+--------+
+|      1 | Alice    | 160000 |      1 |
+|      2 | Claude   | 175000 |      2 |
+|      3 | prince   | 180000 |      3 |
+|      4 | Muhire   | 155000 |      4 |
+|      5 | Vestine  | 190000 |      5 |
+|      6 | Muhoza   | 200000 |      3 |
++--------+----------+--------+--------+
+6 rows in set (0.000 sec)
+
+MariaDB [exam]> insert into departments(dep_name) VALUES("Operations");
+Query OK, 1 row affected (0.017 sec)
+
+############################## Question 6 - B ########################################
+
+MariaDB [exam]> desc employees;
++----------+--------------+------+-----+---------+----------------+
+| Field    | Type         | Null | Key | Default | Extra          |
++----------+--------------+------+-----+---------+----------------+
+| emp_id   | int(11)      | NO   | PRI | NULL    | auto_increment |
+| emp_name | varchar(100) | YES  |     | NULL    |                |
+| salary   | int(11)      | YES  |     | NULL    |                |
+| dep_id   | int(11)      | YES  | MUL | NULL    |                |
++----------+--------------+------+-----+---------+----------------+
+4 rows in set (0.030 sec)
+
+MariaDB [exam]> SELECT * FROM employees;
++--------+----------+--------+--------+
+| emp_id | emp_name | salary | dep_id |
++--------+----------+--------+--------+
+|      1 | Alice    | 160000 |      1 |
+|      2 | Claude   | 175000 |      2 |
+|      3 | prince   | 180000 |      3 |
+|      4 | Muhire   | 155000 |      4 |
+|      5 | Vestine  | 190000 |      5 |
+|      6 | Muhoza   | 200000 |      3 |
++--------+----------+--------+--------+
+6 rows in set (0.001 sec)
+
+############################## Question 6 - C ########################################
+
+MariaDB [exam]> SELECT employees.emp_name, departments.dep_name FROM employees LEFT JOIN departments ON employees.dep_id = departments.dep_id;
+
++----------+---------------------+
+| emp_name | dep_name            |
++----------+---------------------+
+| Alice    | HR                  |
+| Claude   | Finance             |
+| prince   | IT                  |
+| Muhire   | Sales and Marketing |
+| Vestine  | Production          |
+| Muhoza   | IT                  |
++----------+---------------------+
+6 rows in set (0.001 sec)
+
+############################## Question 6 - D ########################################
+
+MariaDB [exam]> SELECT employees.emp_name, departments.dep_name FROM employees RIGHT JOIN departments ON employees.dep_id = departmen
+ts.dep_id;
++----------+---------------------+
+| emp_name | dep_name            |
++----------+---------------------+
+| Alice    | HR                  |
+| Claude   | Finance             |
+| prince   | IT                  |
+| Muhoza   | IT                  |
+| Muhire   | Sales and Marketing |
+| Vestine  | Production          |
+| NULL     | Operations          |
++----------+---------------------+
+7 rows in set (0.001 sec)
+
+############################## Question 6 - E ########################################
+
+MariaDB [exam]> SELECT * FROM employees WHERE salary > (SELECT AVG(salary) FROM employees);
++--------+----------+--------+--------+
+| emp_id | emp_name | salary | dep_id |
++--------+----------+--------+--------+
+|      3 | prince   | 180000 |      3 |
+|      5 | Vestine  | 190000 |      5 |
+|      6 | Muhoza   | 200000 |      3 |
++--------+----------+--------+--------+
+3 rows in set (0.001 sec)
+
+############################## Question 7 - 1 ########################################
+
+MariaDB [exam]> CREATE VIEW ListOfStudents AS SELECT * FROM student;
+Query OK, 0 rows affected (0.020 sec)
+
+MariaDB [exam]> SELECT * FROM ListOfStudents;
++-----------+-------------------+--------+------+-------------+
+| studentId | fullnames         | gender | age  | department  |
++-----------+-------------------+--------+------+-------------+
+| S001      | Aline Uwase       | Female |   22 | Science     |
+| S002      | Eric Kalisa       | Male   |   19 | Physics     |
+| S003      | Claudine Ingabire | Female |   20 | Engineering |
+| S004      | Jean Bosco Muhire | Male   |   18 | Mathematics |
+| S005      | Esther Muhoza     | Female |   21 | Science     |
++-----------+-------------------+--------+------+-------------+
+5 rows in set (0.002 sec)
+
+############################## Question 7 - 2 ########################################
+
+MariaDB [exam]> CREATE VIEW ListOfGirls AS SELECT * FROM student WHERE gender = "Female";
+Query OK, 0 rows affected (0.014 sec)
+
+MariaDB [exam]> SELECT * FROM ListOfGirls;
++-----------+-------------------+--------+------+-------------+
+| studentId | fullnames         | gender | age  | department  |
++-----------+-------------------+--------+------+-------------+
+| S001      | Aline Uwase       | Female |   22 | Science     |
+| S003      | Claudine Ingabire | Female |   20 | Engineering |
+| S005      | Esther Muhoza     | Female |   21 | Science     |
++-----------+-------------------+--------+------+-------------+
+3 rows in set (0.002 sec)
+
+############################## Question 7 - 3 ########################################
+
+MariaDB [exam]> CREATE VIEW ListOfBoys AS SELECT * FROM student WHERE gender = "Male";
+Query OK, 0 rows affected (0.014 sec)
+
+MariaDB [exam]> SELECT * FROM ListOfBoys;
++-----------+-------------------+--------+------+-------------+
+| studentId | fullnames         | gender | age  | department  |
++-----------+-------------------+--------+------+-------------+
+| S002      | Eric Kalisa       | Male   |   19 | Physics     |
+| S004      | Jean Bosco Muhire | Male   |   18 | Mathematics |
++-----------+-------------------+--------+------+-------------+
+2 rows in set (0.002 sec)
+
+############################## Question 7 - 4 ########################################
+
+MariaDB [exam]> INSERT INTO STUDENT (studentId, fullnames, gender, age, department) VALUES('S001', 'Aline Uwase', 'Female', 22, 'Science'),('S002', 'Eric Kalisa', 'Male', 19, 'Physics'),('S003', 'Claudine Ingabire', 'Female', 20, 'Engineering'),('S004', 'Jean Bosco
+Muhire', 'Male', 18, 'Mathematics'),('S005', 'Esther Muhoza', 'Female', 21, 'Science');
+Query OK, 5 rows affected (0.014 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [exam]> select* from student;
++-----------+-------------------+--------+------+-------------+
+| studentId | fullnames         | gender | age  | department  |
++-----------+-------------------+--------+------+-------------+
+| S001      | Aline Uwase       | Female |   22 | Science     |
+| S002      | Eric Kalisa       | Male   |   19 | Physics     |
+| S003      | Claudine Ingabire | Female |   20 | Engineering |
+| S004      | Jean Bosco Muhire | Male   |   18 | Mathematics |
+| S005      | Esther Muhoza     | Female |   21 | Science     |
++-----------+-------------------+--------+------+-------------+
+5 rows in set (0.001 sec)
+
+############################## Question 7 - 5 ########################################
+
+MariaDB [exam]> DELETE FROM student WHERE age < 20;
+Query OK, 2 rows affected (0.015 sec)
+
+MariaDB [exam]> SELECT * FROM student;
++-----------+-------------------+--------+------+-------------+
+| studentId | fullnames         | gender | age  | department  |
++-----------+-------------------+--------+------+-------------+
+| S001      | Aline Uwase       | Female |   22 | Science     |
+| S003      | Claudine Ingabire | Female |   20 | Engineering |
+| S005      | Esther Muhoza     | Female |   21 | Science     |
++-----------+-------------------+--------+------+-------------+
+3 rows in set (0.001 sec)
+
+
+
+########## PART C ############
+############################## Question 9 - A ########################################
+
+MariaDB [exam]> INSERT INTO EMPLOYEES (Employee_Id, First_Name, Last_Name, Email, Phone_Number, Hire_Date, Job_Id, Salary, Commission_Pct, Manager_Id, Department_Id) VALUES (1, 'Jean', 'Uwimana', 'jean.uwimana@example.com', '0788123456', '2022-01-15', 'IT', 5000, 0.20, 100, 60), (2, 'Aline', 'Mukeshimana', 'aline.mukeshimana@example.com', '0788234567', '2023-05-20', 'HR', 4800, 0.15, 101, 70), (3, 'Eric', 'Ndayisaba', 'eric.ndayisaba@example.com', '0788345678', '2021-03-12', 'ENG', 4500, 0.30, 100, 60), (4, 'Marie', 'Kamanzi', 'marie.kamanzi@example.com', '0788456789', '2020-08-10', 'IT', 6000, 0.10, 102, 80), (5, 'Patrick', 'Muhire', 'patrick.muhire@example.com', '0788567890', '2022-11-05', 'ENG', 3000, 0.20, 101, 70), (6, 'Claire', 'Umutesi', 'claire.umutesi@example.com', '0788678901', '2023-02-14', 'HR', 5500, 0.15, 100, 60), (7, 'Ingabire', 'Austin', 'ingabire.austin@example.com', '0788789012', '2020-12-01', 'FIN'
+, 4800, 0.10, 103, 80);
+Query OK, 7 rows affected (0.021 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+MariaDB [exam]> SELECT Employee_Id, First_Name, Last_Name, Salary FROM employees;
++-------------+------------+-------------+--------+
+| Employee_Id | First_Name | Last_Name   | Salary |
++-------------+------------+-------------+--------+
+|           1 | Jean       | Uwimana     |   5000 |
+|           2 | Aline      | Mukeshimana |   4800 |
+|           3 | Eric       | Ndayisaba   |   4500 |
+|           4 | Marie      | Kamanzi     |   6000 |
+|           5 | Patrick    | Muhire      |   3000 |
+|           6 | Claire     | Umutesi     |   5500 |
+|           7 | Ingabire   | Austin      |   4800 |
++-------------+------------+-------------+--------+
+7 rows in set (0.001 sec)
+
+############################## Question 9 - B ########################################
+
+MariaDB [exam]> SELECT Employee_Id, First_Name, Last_Name FROM EMPLOYEES WHERE Manager_Id = 100;
++-------------+------------+-----------+
+| Employee_Id | First_Name | Last_Name |
++-------------+------------+-----------+
+|           1 | Jean       | Uwimana   |
+|           3 | Eric       | Ndayisaba |
+|           6 | Claire     | Umutesi   |
++-------------+------------+-----------+
+3 rows in set (0.001 sec)
+
+############################## Question 9 - C ########################################
+
+MariaDB [exam]> SELECT First_Name, Last_Name FROM EMPLOYEES WHERE Salary >= 4800;
++------------+-------------+
+| First_Name | Last_Name   |
++------------+-------------+
+| Jean       | Uwimana     |
+| Aline      | Mukeshimana |
+| Marie      | Kamanzi     |
+| Claire     | Umutesi     |
+| Ingabire   | Austin      |
++------------+-------------+
+5 rows in set (0.001 sec)
+
+############################## Question 9 - D ########################################
+
+MariaDB [exam]> SELECT Employee_Id, First_Name, Last_Name FROM EMPLOYEES WHERE Last_Name = 'Austin';
++-------------+------------+-----------+
+| Employee_Id | First_Name | Last_Name |
++-------------+------------+-----------+
+|           7 | Ingabire   | Austin    |
++-------------+------------+-----------+
+1 row in set (0.002 sec)
+
+############################## Question 9 - E ########################################
+
+MariaDB [exam]> SELECT First_Name, Last_Name FROM EMPLOYEES WHERE Department_Id IN (60, 70, 80);
++------------+-------------+
+| First_Name | Last_Name   |
++------------+-------------+
+| Jean       | Uwimana     |
+| Aline      | Mukeshimana |
+| Eric       | Ndayisaba   |
+| Marie      | Kamanzi     |
+| Patrick    | Muhire      |
+| Claire     | Umutesi     |
+| Ingabire   | Austin      |
++------------+-------------+
+7 rows in set (0.001 sec)
+
+
+############################## Question 10 - A ########################################
+
+MariaDB [exam]> CREATE TABLE Sales (Sales_No INT PRIMARY KEY,SalesName VARCHAR(50),Branch VARCHAR(50),SalesAmount INT,DOB DATE);
+Query OK, 0 rows affected (0.036 sec)
+
+MariaDB [exam]> INSERT INTO Sales (Sales_No, SalesName, Branch, SalesAmount, DOB) VALUES (1, 'Jean Muhire', 'Kigali', 1500, '1990-12-05'), (2, 'Aline Uwase', 'Huye', 2000, '1987-07-15'), (3, 'Eric Kalisa', 'Rubavu', 1800, '1992-12-20'), (4, 'Marie Kagabo', 'Kigali', 2200, '1995-11-02'), (5, 'Patrick Rukundo', 'Rubavu', 2500, '1989-12-18');
+Query OK, 5 rows affected (0.019 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [exam]> SELECT * FROM Sales;
++----------+-----------------+--------+-------------+------------+
+| Sales_No | SalesName       | Branch | SalesAmount | DOB        |
++----------+-----------------+--------+-------------+------------+
+|        1 | Jean Muhire     | Kigali |        1500 | 1990-12-05 |
+|        2 | Aline Uwase     | Huye   |        2000 | 1987-07-15 |
+|        3 | Eric Kalisa     | Rubavu |        1800 | 1992-12-20 |
+|        4 | Marie Kagabo    | Kigali |        2200 | 1995-11-02 |
+|        5 | Patrick Rukundo | Rubavu |        2500 | 1989-12-18 |
++----------+-----------------+--------+-------------+------------+
+5 rows in set (0.001 sec)
+
+############################## Question 10 - B ########################################
+
+MariaDB [exam]> SELECT Branch, SUM(SalesAmount) AS TotalSales FROM Sales GROUP BY Branch;
++--------+------------+
+| Branch | TotalSales |
++--------+------------+
+| Huye   |       2000 |
+| Kigali |       3700 |
+| Rubavu |       4300 |
++--------+------------+
+3 rows in set (0.002 sec)
+
+############################## Question 10 - C ########################################
+
+MariaDB [exam]> SELECT Branch, AVG(SalesAmount) AS AverageSales FROM Sales GROUP BY Branch;
++--------+--------------+
+| Branch | AverageSales |
++--------+--------------+
+| Huye   |    2000.0000 |
+| Kigali |    1850.0000 |
+| Rubavu |    2150.0000 |
++--------+--------------+
+3 rows in set (0.001 sec)
+
+############################## Question 10 - D ########################################
+
+MariaDB [exam]> SELECT SalesName, DATE_FORMAT(DOB, '%Y-%b-%d') AS FormattedDOB FROM Sales WHERE MONTH(DOB) = 12;
++-----------------+--------------+
+| SalesName       | FormattedDOB |
++-----------------+--------------+
+| Jean Muhire     | 1990-Dec-05  |
+| Eric Kalisa     | 1992-Dec-20  |
+| Patrick Rukundo | 1989-Dec-18  |
++-----------------+--------------+
+3 rows in set (0.001 sec)
+
+############################## Question 10 - E ########################################
+
+MariaDB [exam]> SELECT SalesName, DATE_FORMAT(DOB, '%d-%b-%Y') AS FormattedDOB FROM Sales ORDER BY MONTHNAME(DOB);
++-----------------+--------------+
+| SalesName       | FormattedDOB |
++-----------------+--------------+
+| Jean Muhire     | 05-Dec-1990  |
+| Eric Kalisa     | 20-Dec-1992  |
+| Patrick Rukundo | 18-Dec-1989  |
+| Aline Uwase     | 15-Jul-1987  |
+| Marie Kagabo    | 02-Nov-1995  |
++-----------------+--------------+
+5 rows in set (0.001 sec)
+
